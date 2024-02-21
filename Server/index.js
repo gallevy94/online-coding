@@ -1,19 +1,28 @@
+const http = require("http");
 const express = require("express");
+const path = require("path");
+const { Server } = require("socket.io");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-const http = require("http");
-const { Server } = require("socket.io");
 const blocksData = require("./blocksData");
 const mongoose = require("mongoose");
+const server = http.createServer(app);
+app.use(express.static(path.join(__dirname, "../Client")));
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.get("/", (req, res) => {
+  res.send("hello");
+});
+
 //Mongo connection
 mongoose
-  .connect("mongodb+srv://gallevy:pass@cluster0.kgddfvz.mongodb.net/")
+  .connect(
+    "mongodb+srv://gallevy:RvCbiyIbIlOb9Kjm@cluster0.kgddfvz.mongodb.net/"
+  )
   .then(() => {
     console.log("monogo is connected!");
   })
@@ -31,10 +40,10 @@ mongoose
 //Socket.io connection
 let mentorSocket = null;
 let studentSocket = null;
-const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://65d61241b1e8efc0c8809032--steady-boba-f2d345.netlify.app",
     methods: ["GET", "POST"],
   },
 });
@@ -84,10 +93,10 @@ io.on("connect", (socket) => {
   });
 });
 
-server.listen(5000, () => {
-  console.log("Server is Running");
-});
-
-// server.listen(process.env.PORT || 5000, () => {
+// server.listen(5000, () => {
 //   console.log("Server is Running");
 // });
+
+server.listen(process.env.PORT || 5000, () => {
+  console.log("Server is Running");
+});

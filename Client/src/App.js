@@ -14,7 +14,7 @@ function App() {
   const [blocksData, setBlocksData] = useState([]);
 
   useEffect(() => {
-    socket = io.connect("http://localhost:5000");
+    socket = io.connect("https://online-coding-6045b01bb264.herokuapp.com");
 
     socket.on("connect", () => {
       socket.on("send_data_blocks", (data) => {
