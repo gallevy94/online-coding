@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 3rem;
+    margin: 60px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.code_blocks_container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
+    align-items: center;
+    justify-content: center;
+}
+
+.code_block {
+    background-color: #373737;
+    margin: 10px;
+    padding: 15px;
+    cursor: pointer;
+    height: 160px;
+    width: 200px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    border: 2px solid;
+    align-self: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer
+}
+
+.code_block:hover {
+    opacity: 0.7;
+}
