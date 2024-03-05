@@ -1,14 +1,11 @@
 const http = require("http");
 const express = require("express");
-const path = require("path");
 const { Server } = require("socket.io");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const blocksData = require("./blocksData");
-const mongoose = require("mongoose");
 const server = http.createServer(app);
-app.use(express.static(path.join(__dirname, "../Client")));
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,32 +15,13 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
-//Mongo connection
-mongoose
-  .connect(
-    "mongodb+srv://gallevy:RvCbiyIbIlOb9Kjm@cluster0.kgddfvz.mongodb.net/"
-  )
-  .then(() => {
-    console.log("monogo is connected!");
-  })
-  .catch(() => {
-    console.log("failed, need password");
-  });
-
-// const DataSchema = new mongoose.Schema({
-//   id: Number,
-//   title: String,
-//   code: String,
-//   solution: String,
-// });
-
 //Socket.io connection
 let mentorSocket = null;
 let studentSocket = null;
 
 const io = new Server(server, {
   cors: {
-    origin: "https://65d61241b1e8efc0c8809032--steady-boba-f2d345.netlify.app",
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
@@ -51,7 +29,10 @@ const io = new Server(server, {
 io.on("connect", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
-  socket.emit("send_data_blocks", blocksData);
+  const modifiedData = blocksData.data.map((block) => {
+    return { id: block.id, title: block.title, code: block.code };
+  });
+  socket.emit("send_data_blocks", modifiedData);
 
   if (!mentorSocket) {
     mentorSocket = socket;
@@ -93,10 +74,6 @@ io.on("connect", (socket) => {
   });
 });
 
-// server.listen(5000, () => {
-//   console.log("Server is Running");
-// });
-
-server.listen(process.env.PORT || 5000, () => {
+server.listen(5000, () => {
   console.log("Server is Running");
 });

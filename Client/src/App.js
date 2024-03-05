@@ -7,22 +7,22 @@ import Mentor from "./components/Mentor";
 import Student from "./components/Student";
 
 let socket;
-let isMentor;
 
 function App() {
   const [blockPressed, setBlockPressed] = useState({});
   const [blocksData, setBlocksData] = useState([]);
+  const [isMentor, setIsMentor] = useState(false);
 
   useEffect(() => {
-    socket = io.connect("https://online-coding-6045b01bb264.herokuapp.com");
+    socket = io.connect("localhost:5000");
 
     socket.on("connect", () => {
       socket.on("send_data_blocks", (data) => {
-        setBlocksData(data.data);
+        setBlocksData(data);
       });
 
       socket.on("role", (receivedRole) => {
-        isMentor = receivedRole;
+        setIsMentor(receivedRole);
       });
     });
 

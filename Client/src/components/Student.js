@@ -16,17 +16,17 @@ function Student({ socket, blockPressed }) {
 
   //calls when student click submit btn
   const submitStudentCode = (event) => {
-    event.preventDefault();
     const finalCode = editorRef.current.getValue();
     socket.emit("send_solution", { id: blockPressed.id, message: finalCode });
-    socket.on("receive_solution", (isCorrect) => {
-      if (isCorrect) {
-        alert("You Are Right!😃");
-      } else {
-        alert("Try Again");
-      }
-    });
   };
+
+  socket.on("receive_solution", (isCorrect) => {
+    if (isCorrect) {
+      alert("You Are Right!😃");
+    } else {
+      alert("Try Again");
+    }
+  });
 
   return (
     <div>
